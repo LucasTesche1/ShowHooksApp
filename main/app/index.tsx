@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useRef, useContext, createContext } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 
 const TemaContext = createContext('claro');
 
 export default function App() {
+
+  
+  useEffect(() => {
+    Alert.alert(
+      "Bem-vindo(a)!",
+      `Hooks são funções especiais do React que permitem “ligar” recursos do React a componentes funcionais. 
+Antes deles, só componentes de classe podiam ter estado e efeitos colaterais. Em resumo: Hooks deixam os componentes funcionais mais poderosos e reutilizáveis.
+
+Veja os exemplos`
+    );
+  }, []);
   const [tema, setTema] = useState('claro');
 
   const alternarTema = () => {
@@ -19,7 +30,7 @@ export default function App() {
 
         <View style={styles.card}>
           <View style={styles.contentCard}>
-            <Text style={styles.tittleCard1}>useState</Text>
+            <Text style={styles.tittleCard1}>useState & useContext</Text>
             <Text style={styles.textCard}>Serve para criar variáveis de estado dentro de um componente funcional.</Text>
             <Text style={styles.textCard}>É o “coração” da reatividade no React.</Text>
           </View>
@@ -55,9 +66,14 @@ function HookDemo() {
     <View style={styles.container}>
     <View style={styles.card}>
       <View style={styles.contentCard}>
-        <Text style={styles.tittleCard2}>useEffect</Text>
+        <Text style={styles.tittleCard2}>useRef</Text>
         <Text style={styles.textCard}>Usado para efeitos colaterais, ou seja, coisas que acontecem fora do fluxo de renderização.</Text>
         <Text style={styles.textCard}>Pode ser configurado para rodar:</Text>
+        <Text style={styles.textCard}>
+            - toda vez que o componente renderiza,
+            {'\n'}- só uma vez (ao montar),
+            {'\n'}- ou quando algo específico muda.
+        </Text>
         
         <TextInput
         ref={inputRef}
@@ -73,7 +89,7 @@ function HookDemo() {
       
       
         <View style={styles.contentCard}>
-          <Text style={styles.tittleCard3}>useRef</Text>
+          <Text style={styles.tittleCard3}>useEffect</Text>
           <Text style={styles.textCard}>Cria uma referência mutável que não causa re-renderização quando muda.</Text>
           <Text style={styles.textCard}>Muito usado para acessar elementos do DOM diretamente.</Text>
 
@@ -201,7 +217,7 @@ const styles = StyleSheet.create({
     color:'#AFAFAF',
     borderWidth: 1, 
     borderRadius:20,
-    width: 200, 
+    width: 250, 
     padding: 12,
     marginVertical:50,
     borderColor:'#BA181B',
@@ -231,8 +247,6 @@ const styles = StyleSheet.create({
     height:40,
     backgroundColor: '#B8DBD9',
     fontSize:40,
-
-
 
     shadowColor: '#000',
     shadowOpacity: 0.3,
