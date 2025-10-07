@@ -1,56 +1,86 @@
+import { router } from 'expo-router';
 import React, { useState, useEffect, useRef, useContext, createContext } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { ExpoRouter, router } from 'expo-router';
-import { push } from 'expo-router/build/global-state/routing';
 
 const TemaContext = createContext('claro');
 
 export default function App() {
 
-  
+  return (
+    <HookDemo />
+  );
+}
+
+function HookDemo() {
+  const [contador, setContador] = useState(0);
+  const inputRef = useRef<TextInput>(null);
+
   useEffect(() => {
-    Alert.alert(
-      "Bem-vindo(a)!",
-      `Hooks são funções especiais do React que permitem “ligar” recursos do React a componentes funcionais. 
-Antes deles, só componentes de classe podiam ter estado e efeitos colaterais. Em resumo: Hooks deixam os componentes funcionais mais poderosos e reutilizáveis.
+    console.log(`Contador atualizado: ${contador}`);
+  }, [contador]);
 
-Veja os exemplos`
-    );
+  useEffect(() => {
+    inputRef.current!.focus();
   }, []);
-  const [tema, setTema] = useState('claro');
-
-  const alternarTema = () => {
-    setTema(tema === 'claro' ? 'escuro' : 'claro');
-  };
 
   return (
-    <TemaContext.Provider value={tema}>
-      <View style={[styles.container, tema === 'claro' ? styles.claro : styles.escuro]}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titulo}>HOOKS</Text>
-        </View>
 
-        <View style={styles.card}>
-          <View style={styles.contentCard}>
-            <Text style={styles.tittleCard1}>useState & useContext</Text>
-            <Text style={styles.textCard}>Serve para criar variáveis de estado dentro de um componente funcional.</Text>
-            <Text style={styles.textCard}>É o “coração” da reatividade no React.</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={alternarTema}>
-               <Text style={{ color: '#fff', fontWeight: 'bold' }}>Alternar Tema</Text>
-          </TouchableOpacity>
-          <Text style={styles.textCard}>Tema atual: {tema}</Text>
-        </View>
+    <ScrollView>
+    <View style={styles.container}>
+    <View style={styles.card}>
+      <View style={styles.contentCard}>
+        <Text style={styles.tittleCard2}>useRef</Text>
+        <Text style={styles.textCard}>Usado para efeitos colaterais, ou seja, coisas que acontecem fora do fluxo de renderização.</Text>
+        <Text style={styles.textCard}>Pode ser configurado para rodar:</Text>
+        <Text style={styles.textCard}>
+            - toda vez que o componente renderiza,
+            {'\n'}- só uma vez (ao montar),
+            {'\n'}- ou quando algo específico muda.
+        </Text>
+        
+        <TextInput
+        ref={inputRef}
+        placeholder="Digite algo..."
+        style={styles.input}
+      />
+      </View>      
+
+
+    </View>
+
+    <View style={styles.card}>
+      
+      
+    <View style={styles.contentCard}>
+        <Text style={styles.tittleCard3}>useEffect</Text>
+        <Text style={styles.textCard}>Cria uma referência mutável que não causa re-renderização quando muda.</Text>
+        <Text style={styles.textCard}>Muito usado para acessar elementos do DOM diretamente.</Text>
+
+        <View style={styles.contentCard}>
+        <Text style={styles.texto}>CONTADOR: {contador}</Text>
         <TouchableOpacity
-          style={styles.endButton}
-          onPress={() => router.push('/page2')}>
-          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Ver mais exemplos</Text>
+        style={styles.buttonCounter}
+        onPress={() => setContador(contador + 1)}>
+        <Text style={{ color: '#fff', fontWeight: 'bold' }}>+</Text>
         </TouchableOpacity>
 
-      </View>
-    </TemaContext.Provider>
+        </View>
+        
+    </View>
+
+
+    </View>
+
+    <TouchableOpacity
+        style={styles.endButton}
+        onPress={() => router.push('/')}>
+        <Text style={{ color: '#fff', fontWeight: 'bold' }}>Voltar</Text>
+    </TouchableOpacity>
+
+
+    </View>
+    
+    </ScrollView>
   );
 }
 
@@ -58,7 +88,7 @@ const styles = StyleSheet.create({
 
 
   container: { 
-    flex:1,
+    display:'flex',
     gap:10,
     alignItems: 'center', 
     justifyContent: 'center' },
@@ -132,9 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9ECEF' },
 
   escuro: { 
-    backgroundColor: '#343A40',
-
-  },
+    backgroundColor: '#343A40' },
 
   titulo: { 
     top:30,
@@ -183,7 +211,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     margin:49,
     fontFamily:'Arial',
-    color:'#000',
+    color:'#fff',
     borderRadius:20,
     backgroundColor: '#FCA311',
     paddingHorizontal:50,
